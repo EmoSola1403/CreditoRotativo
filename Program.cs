@@ -1,28 +1,39 @@
-﻿// Credito Rotativo
-decimal valorTotal;
-double percentualPagamentoMinimo, taxaJurosMensais;
+﻿const double TaxaIOFMes = 0.0038;
+const double TaxaIOFDia = 0.000082;
 
-decimal valorPagamentoMinimo;
+decimal totalFatura, valorPagamentoMinimo, valorNaoPago;
+decimal valorJuros, valorIOFMes, valorIOFDia, valorProximaFatura, custoRotativo;
+double pagamentoMinimo, taxaJuros;
 
-Console.WriteLine("- Crédito Rotativo de Cartão de Crédito -\n");
+Console.WriteLine("--- Crédito Rotativo de Cartão de Crédito ---\n");
 
 Console.Write("Valor total da fatura (R$)...: ");
-valorTotal = Convert.ToDecimal(Console.ReadLine());
+totalFatura = Convert.ToDecimal(Console.ReadLine());
+
 Console.Write("Pagamento mínimo (%).........: ");
-percentualPagamentoMinimo = Convert.ToDouble(Console.ReadLine()) / 100;
-Console.Write("Taxa de juros mensais (%)....: \n");
-taxaJurosMensais = Convert.ToDouble(Console.ReadLine()) / 100;
+pagamentoMinimo = Convert.ToDouble(Console.ReadLine()) / 100;
 
-valorPagamentoMinimo = valorTotal * Convert.ToDecimal(percentualPagamentoMinimo);
+Console.Write("Taxa de juros mensais (%)....: ");
+taxaJuros = Convert.ToDouble(Console.ReadLine()) / 100;
 
-Console.WriteLine($"\nPagamento mínimo..................: {valorPagamentoMinimo:C2}");
+valorPagamentoMinimo = totalFatura * Convert.ToDecimal(pagamentoMinimo);
 
-Console.WriteLine($"\nCaso seja pago o valor mínimo:");
+valorNaoPago = totalFatura - valorPagamentoMinimo;
+valorJuros = valorNaoPago * Convert.ToDecimal(taxaJuros);
+valorIOFMes = valorNaoPago * Convert.ToDecimal(TaxaIOFMes);
+valorIOFDia = valorNaoPago * Convert.ToDecimal(TaxaIOFDia * 30);
 
-Console.WriteLine($"Valor não pago....................: R$850,00");
-Console.WriteLine($"Juros.............................: R$76,50");
-Console.WriteLine($"IOF mensal........................: R$3,23");
-Console.WriteLine($"IOF diário........................: R$2,09");
-Console.WriteLine("");
-Console.WriteLine($"Valor a pagar na próxima fatura...: R$931,82");
-Console.WriteLine($"Custo do crédito rotativo.........: R$81,82");
+valorProximaFatura = valorNaoPago + valorJuros + valorIOFMes + valorIOFDia;
+custoRotativo = valorProximaFatura - valorNaoPago;
+
+Console.WriteLine($"\nPagamento mínimo..................: {valorPagamentoMinimo:C}");
+
+Console.WriteLine("\nCaso seja pago o valor mínimo:\n");
+
+Console.WriteLine($"Valor não pago....................: {valorNaoPago:C}");
+Console.WriteLine($"Juros.............................: {valorJuros:C}");
+Console.WriteLine($"IOF mensal........................: {valorIOFMes:C}");
+Console.WriteLine($"IOF diário........................: {valorIOFDia:C}");
+
+Console.WriteLine($"\nValor a pagar na próxima fatura...: {valorProximaFatura:C}");
+Console.WriteLine($"Custo do crédito rotativo.........: {custoRotativo:C}");
